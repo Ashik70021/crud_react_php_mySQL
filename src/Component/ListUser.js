@@ -1,50 +1,49 @@
-import axios from "axios";
-import { useState } from "react";
+import axios from "axios"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function ListUser() {
-    
-    const [inputs, setInputs] = useState({})
-    
-    const handleChange = (event) => {
-          const name = event.target.name;
-          const value = event.target.value;
+    const [users, setUsers]= useState([]);
 
-          setInputs(values => ({...values, [name]: value}));
+    useEffect(() => {
+        getUsers();
+    }, []);
+    function getUsers() {
+        axios.get('http://localhost:80/api/users').then(function (response) {
+            console.log(response.data);
+            setUsers(response.data)
+        });
     }
 
-    const handleSubmit = (event) =>{
-          event.preventDefault();
-
-          axios.post('http://localhost:80/api/user/save', inputs);
-          console.log(inputs)
-    }
     return (
-        <div align="center">
+        <div>
             <h1>List User</h1>
-            <form onSubmit={handleSubmit}>
-                <table cellSpacing={10}>
-                    <tbody>
-                        <tr>
-                            <th><label>Name:</label></th>
-                            <td><input type="text" name="name" onChange={handleChange}></input></td>
-                        </tr>
-                        <tr>
-                            <th><label>Email:</label></th>
-                            <td><input type="text" name="email" onChange={handleChange}></input></td>
-                        </tr>
-                        <tr>
-                            <th><label>Mobile:</label></th>
-                            <td><input type="number" name="mobile" onChange={handleChange}></input></td>
-                        </tr>
-                        <tr>
-                            <td colSpan={2} align="right">
-                            <button>Save</button>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user,key)=>
+                    <tr key={key}>
+                        <td>{user.id}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.mobile}</td>
+                        <td>
+                           <Link to={`user/${user.id}/edit`}><button>Edit</button></Link>
+                           <Link><button>Delete</button></Link>
+                        </td>
+                    </tr>
+                    )}
+                </tbody>
+            </table>
         </div>
     )
+
 }
