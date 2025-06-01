@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 export default function ListUser() {
@@ -13,6 +14,8 @@ export default function ListUser() {
 
     const handleSubmit = (event) =>{
           event.preventDefault();
+
+          axios.post('http://localhost:80/api/user/save', inputs);
           console.log(inputs)
     }
     return (
@@ -30,8 +33,8 @@ export default function ListUser() {
                             <td><input type="text" name="email" onChange={handleChange}></input></td>
                         </tr>
                         <tr>
-                            <th><label>Name:</label></th>
-                            <td><input type="number" name="number" onChange={handleChange}></input></td>
+                            <th><label>Mobile:</label></th>
+                            <td><input type="number" name="mobile" onChange={handleChange}></input></td>
                         </tr>
                         <tr>
                             <td colSpan={2} align="right">
