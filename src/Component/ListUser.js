@@ -15,6 +15,13 @@ export default function ListUser() {
         });
     }
 
+    const deleteUser = (id) =>{
+        axios.delete(`http://localhost:80/api/user/${id}`).then(function(response){
+            console.log(response.data);
+            getUsers();
+        })
+    }
+
     return (
         <div>
             <h1>List User</h1>
@@ -37,7 +44,7 @@ export default function ListUser() {
                         <td>{user.mobile}</td>
                         <td>
                            <Link to={`user/${user.id}/edit`}><button>Edit</button></Link>
-                           <Link><button>Delete</button></Link>
+                           <Link onClick={()=>deleteUser(user.id)}><button>Delete</button></Link>
                         </td>
                     </tr>
                     )}
